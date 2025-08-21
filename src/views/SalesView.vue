@@ -58,11 +58,6 @@
       <span>Загрузка данных...</span>
     </div>
 
-    <div v-if="!loading && sales.length > 0" class="chart-container">
-      <BarChart :chart-data="chartData" />
-    </div>
-    <div v-else-if="!loading" class="no-data">Нет данных для отображения графика</div>
-
     <DataTable
       v-if="sales.length > 0"
       :value="sales"
@@ -119,7 +114,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useApiStore, type Sale } from '@/stores/api'
-import BarChart from '@/components/BarChart.vue'
 
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
@@ -190,17 +184,6 @@ const onPageChange = (event: any) => {
   currentPage.value = event.page + 1
   fetchData(currentPage.value)
 }
-
-const chartData = computed(() => ({
-  labels: sales.value.slice(0, 20).map(s => s.date ? formatDate(s.date) : ''),
-  datasets: [{
-    label: 'Сумма продаж',
-    data: sales.value.slice(0, 20).map(s => s.totalPrice || 0),
-    backgroundColor: '#FF8C00',
-    borderColor: '#FF6B00',
-    borderWidth: 2
-  }]
-}))
 
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('ru-RU', {

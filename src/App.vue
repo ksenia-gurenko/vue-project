@@ -2,7 +2,7 @@
   <div id="app">
     <nav class="navbar">
       <div class="nav-container">
-        <h2 class="nav-title">ЛОГОТИП</h2>
+        <h2 class="nav-title">ЛОГО</h2>
         <div class="nav-links">
           <RouterLink to="/incomes" class="nav-link">Поступления</RouterLink>
           <RouterLink to="/orders" class="nav-link">Заказы</RouterLink>

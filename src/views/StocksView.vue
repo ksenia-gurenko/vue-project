@@ -8,28 +8,6 @@
 
     <div class="filters">
       <div class="filter-group">
-        <label>Дата от (опционально):</label>
-        <Calendar
-          v-model="filters.dateFrom"
-          dateFormat="yy-mm-dd"
-          showIcon
-          placeholder="Выберите дату (необязательно)"
-        />
-        <small class="date-hint">Параметр может быть не обязательным</small>
-      </div>
-
-      <div class="filter-group">
-        <label>Дата до (опционально):</label>
-        <Calendar
-          v-model="filters.dateTo"
-          dateFormat="yy-mm-dd"
-          showIcon
-          placeholder="Выберите дату (необязательно)"
-        />
-        <small class="date-hint">Параметр может быть не обязательным</small>
-      </div>
-
-      <div class="filter-group">
         <label>Артикул:</label>
         <InputText v-model="filters.supplierArticle" placeholder="Введите артикул" />
       </div>
@@ -61,11 +39,6 @@
       <span>Загрузка данных...</span>
     </div>
 
-    <div v-if="!loading && stocks.length > 0" class="chart-container">
-      <BarChart :chart-data="chartData" />
-    </div>
-    <div v-else-if="!loading" class="no-data">Нет данных для отображения графика</div>
-
     <DataTable
       v-if="stocks.length > 0"
       :value="stocks"
@@ -79,11 +52,6 @@
       currentPageReportTemplate="Показано {first} - {last} из {totalRecords} записей"
       class="orange-table"
     >
-      <Column field="lastChangeDate" header="Дата изменения" sortable>
-        <template #body="{ data }">
-          {{ formatDate(data.lastChangeDate) }}
-        </template>
-      </Column>
       <Column field="supplierArticle" header="Артикул" sortable />
       <Column field="brand" header="Бренд" sortable />
       <Column field="category" header="Категория" sortable />
@@ -108,7 +76,6 @@
         <template #title>Данные не найдены</template>
         <template #content>
           <p>Попробуйте изменить параметры фильтрации.</p>
-          <p><small>API может не требовать параметры дат. Попробуйте оставить их пустыми.</small></p>
         </template>
       </Card>
     </div>
@@ -118,11 +85,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useApiStore, type Stock } from '@/stores/api'
-import BarChart from '@/components/BarChart.vue'
 
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
-import Calendar from 'primevue/calendar'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import Message from 'primevue/message'
@@ -137,8 +102,6 @@ const limit = ref(10)
 const totalRecords = ref(0)
 
 const filters = ref({
-  dateFrom: null as Date | null,
-  dateTo: null as Date | null,
   supplierArticle: '',
   warehouseName: '',
   brand: '',
@@ -153,9 +116,6 @@ const fetchData = async (page: number = 1) => {
       limit: limit.value
     }
 
-    // Добавляем только те параметры, которые указаны
-    if (filters.value.dateFrom) params.dateFrom = filters.value.dateFrom
-    if (filters.value.dateTo) params.dateTo = filters.value.dateTo
     if (filters.value.supplierArticle) params.supplierArticle = filters.value.supplierArticle
     if (filters.value.warehouseName) params.warehouseName = filters.value.warehouseName
     if (filters.value.brand) params.brand = filters.value.brand
@@ -173,8 +133,6 @@ const fetchData = async (page: number = 1) => {
 
 const resetFilters = () => {
   filters.value = {
-    dateFrom: null,
-    dateTo: null,
     supplierArticle: '',
     warehouseName: '',
     brand: '',
@@ -188,27 +146,11 @@ const onPageChange = (event: any) => {
   fetchData(currentPage.value)
 }
 
-const chartData = computed(() => ({
-  labels: stocks.value.slice(0, 20).map(s => s.supplierArticle || ''),
-  datasets: [{
-    label: 'Количество на складе',
-    data: stocks.value.slice(0, 20).map(s => s.quantity || 0),
-    backgroundColor: '#FF8C00',
-    borderColor: '#FF6B00',
-    borderWidth: 2
-  }]
-}))
-
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('ru-RU', {
     style: 'currency',
     currency: 'RUB'
   }).format(amount)
-}
-
-const formatDate = (dateString: string) => {
-  if (!dateString) return ''
-  return new Date(dateString).toLocaleDateString('ru-RU')
 }
 
 onMounted(() => fetchData(1))
@@ -217,21 +159,5 @@ onMounted(() => fetchData(1))
 <style scoped>
 .no-data-message {
   margin: 2rem 0;
-}
-
-.date-hint {
-  color: var(--text-light);
-  font-size: 0.8rem;
-  margin-top: 0.25rem;
-  display: block;
-}
-
-.no-data-message ul {
-  margin: 0.5rem 0;
-  padding-left: 1.5rem;
-}
-
-.no-data-message li {
-  margin: 0.25rem 0;
 }
 </style>

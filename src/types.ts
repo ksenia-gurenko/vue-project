@@ -1,3 +1,4 @@
+// src/types/api.ts
 export interface Income {
   date: string
   lastChangeDate: string
