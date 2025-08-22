@@ -1,20 +1,28 @@
 # vue-project
 
-This template should help get you started developing with Vue 3 in Vite.
+Vue.js приложение для анализа и визуализации данных из Wildberries API. Панель управления предоставляет удобный интерфейс для просмотра и анализа данных о продажах, заказах, складах и поступлениях.
 
-## Recommended IDE Setup
+## 🚀 Демо
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Приложение развернуто на Netlify:  
+🔗 **https://ссылка/**
 
-## Type Support for `.vue` Imports in TS
+## 📋 Функциональность
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- 📊 **Продажи**: Анализ данных о продажах с фильтрацией по датам, артикулам и категориям
+- 📦 **Заказы**: Просмотр информации о заказах с указанием статусов и сумм
+- 🏪 **Склады**: Мониторинг остатков товаров на складах с фильтрацией по различным параметрам
+- 📨 **Поступления**: Отслеживание поступлений товаров с детализацией по складам и статусам
 
-## Customize configuration
+## 🛠 Технологии
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- **Vue 3** с Composition API и TypeScript
+- **PrimeVue** - UI компоненты
+- **Pinia** - управление состоянием
+- **PrimeFlex** - система разметки
+- **Chart.js** - построение графиков
 
-## Project Setup
+## 📦 Установка и запуск
 
 ```sh
 npm install
@@ -32,30 +40,3 @@ npm run dev
 npm run build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
-
-```sh
-npm run test:e2e:dev
-```
-
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
-
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
-
-```sh
-npm run build
-npm run test:e2e
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
