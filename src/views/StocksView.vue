@@ -113,7 +113,10 @@ const fetchData = async (page: number = 1) => {
   try {
     const params: any = {
       page,
-      limit: limit.value
+      limit: limit.value,
+      // Добавляем даты по умолчанию для stocks API
+      dateFrom: '2020-01-01', // фиксированная начальная дата
+      dateTo: new Date().toISOString().split('T')[0] // текущая дата
     }
 
     if (filters.value.supplierArticle) params.supplierArticle = filters.value.supplierArticle
